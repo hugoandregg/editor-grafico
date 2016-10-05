@@ -37,6 +37,54 @@ class TestEditorGrafico(unittest.TestCase):
         self.editor.criar(0, -1)
         self.assertEquals(self.editor.matriz, [])
 
+    '''
+    L X Y C
+    Colore um pixel de coordenadas (X,Y) na cor C.
+    '''
+    def teste_colorir(self):
+        self.editor.criar(2, 2)
+        self.editor.colorir(1, 2, "R")
+        esperado = [
+            ["O", "R"],
+            ["O", "O"]
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_com_numero(self):
+        self.editor.criar(2, 2)
+        self.editor.colorir(1, 2, 3)
+        self.assertEquals(self.editor.matriz, [["O", "3"], ["O", "O"]])
+
+    def teste_colorir_com_X_maior_que_matriz(self):
+        self.editor.criar(2, 2)
+        with self.assertRaises(IndexError):
+            self.editor.colorir(3, 2, "R")
+
+    def teste_colorir_com_Y_maior_que_matriz(self):
+        self.editor.criar(2, 2)
+        with self.assertRaises(IndexError):
+            self.editor.colorir(1, 3, "R")
+
+    def teste_colorir_com_X_igual_a_zero(self):
+        self.editor.criar(2, 2)
+        self.editor.colorir(0, 2, "R")
+        self.assertEquals(self.editor.matriz, [["O", "O"], ["O", "O"]])
+
+    def teste_colorir_com_X_menor_que_zero(self):
+        self.editor.criar(2, 2)
+        self.editor.colorir(-1, 2, "R")
+        self.assertEquals(self.editor.matriz, [["O", "O"], ["O", "O"]])
+
+    def teste_colorir_com_Y_igual_a_zero(self):
+        self.editor.criar(2, 2)
+        self.editor.colorir(2, 0, "R")
+        self.assertEquals(self.editor.matriz, [["O", "O"], ["O", "O"]])
+
+    def teste_colorir_com_Y_menor_que_matriz(self):
+        self.editor.criar(2, 2)
+        self.editor.colorir(1, -1, "R")
+        self.assertEquals(self.editor.matriz, [["O", "O"], ["O", "O"]])
+
 
 if __name__ == '__main__':
     unittest.main()
