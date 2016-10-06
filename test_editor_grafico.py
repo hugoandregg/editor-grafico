@@ -168,7 +168,7 @@ class TestEditorGrafico(unittest.TestCase):
     def teste_colorir_verticalmente_X_menor_que_matriz(self):
         self.editor.criar(3, 3)
         with self.assertRaises(IndexError):
-            self.editor.colorir_verticalmente(-1, 2, 3, "R")
+            self.editor.colorir_verticalmente(-1, 4, 3, "R")
 
     def teste_colorir_verticalmente_y1_igual_a_zero(self):
         self.editor.criar(3, 3)
@@ -274,6 +274,63 @@ class TestEditorGrafico(unittest.TestCase):
         self.editor.criar(3, 3)
         with self.assertRaises(IndexError):
             self.editor.colorir_horizontalmente(2, 3, 0, "R")
+
+    '''
+    K X1 Y1 X2 Y2 C
+    Desenha um retangulo de cor C. (X1,Y1) é o canto superior esquerdo e
+    (X2,Y2) o canto inferior direito.
+    '''
+    def teste_colorir_retangulo(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_retangulo(2, 2, 3, 3, "R")
+        esperado = [
+            ['O', 'O', 'O'],
+            ['O', 'R', 'R'],
+            ['O', 'R', 'R']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_retangulo_completo(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_retangulo(1, 1, 3, 3, "R")
+        esperado = [
+            ['R', 'R', 'R'],
+            ['R', 'R', 'R'],
+            ['R', 'R', 'R']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_retangulo_completo_5x5(self):
+        self.editor.criar(5, 5)
+        self.editor.colorir_retangulo(1, 1, 5, 5, "R")
+        esperado = [
+            ['R', 'R', 'R', 'R', 'R'],
+            ['R', 'R', 'R', 'R', 'R'],
+            ['R', 'R', 'R', 'R', 'R'],
+            ['R', 'R', 'R', 'R', 'R'],
+            ['R', 'R', 'R', 'R', 'R']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_retangulo_Y_igual_a_zero(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_retangulo(1, 1, 3, 0, "R")
+
+    def teste_colorir_retangulo_X_igual_a_zero(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_retangulo(1, 0, 3, 3, "R")
+
+    def teste_colorir_retangulo_Y_negativo(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_retangulo(1, 1, 3, -2, "R")
+
+    def teste_colorir_retangulo_X_negativo(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_retangulo(-2, 1, 3, 3, "R")
 
 
 if __name__ == '__main__':

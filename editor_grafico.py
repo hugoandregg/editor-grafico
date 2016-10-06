@@ -33,6 +33,13 @@ class EditorGrafico():
         for x in range(x1-1, x2):
             self.matriz[y][x] = cor
 
+    def colorir_retangulo(self, x1, y1, x2, y2, cor):
+        x1, y1, x2, y2, cor = int(x1), int(y1), int(x2), int(y2), str(cor)
+        if y2 <= 0:
+            raise IndexError
+        for y in range(y1, y2+1):
+            self.colorir_horizontalmente(x1, x2, y, cor)
+
 
 def main():
     pass
