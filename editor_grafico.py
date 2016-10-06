@@ -24,6 +24,15 @@ class EditorGrafico():
         for y in range(y1-1, y2):
             self.matriz[y][x] = cor
 
+    def colorir_horizontalmente(self, x1, x2, y, cor):
+        x1, x2, y, cor = int(x1), int(x2), int(y)-1, str(cor)
+        if x1 <= 0 or x2 <= 0 or y < 0:
+            raise IndexError
+        if x1 > x2:
+            x1, x2 = x2, x1
+        for x in range(x1-1, x2):
+            self.matriz[y][x] = cor
+
 
 def main():
     pass

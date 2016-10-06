@@ -185,6 +185,96 @@ class TestEditorGrafico(unittest.TestCase):
         with self.assertRaises(IndexError):
             self.editor.colorir_verticalmente(0, 2, 3, "R")
 
+    '''
+    H X1 X2 Y C
+    Desenha um segmento horizontal na linha Y nas colunas de X1 a X2 (intervalo
+    inclusivo) na cor C.
+    '''
+    def teste_colorir_horizontalmente(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_horizontalmente(1, 3, 2, "R")
+        esperado = [
+            ['O', 'O', 'O'],
+            ['R', 'R', 'R'],
+            ['O', 'O', 'O']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_horizontalmente_coluna_incompleta(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_horizontalmente(1, 2, 2, "R")
+        esperado = [
+            ['O', 'O', 'O'],
+            ['R', 'R', 'O'],
+            ['O', 'O', 'O']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_horizontalmente_x1_maior_que_matriz(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(4, 3, 2, "R")
+
+    def teste_colorir_horizontalmente_x1_menor_que_matriz(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(-1, 3, 2, "R")
+
+    def teste_colorir_horizontalmente_x2_maior_que_matriz(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(3, 4, 2, "R")
+
+    def teste_colorir_horizontalmente_x2_menor_que_matriz(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(3, -1, 2, "R")
+
+    def teste_colorir_horizontalmente_x2_menor_que_y1(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_horizontalmente(3, 1, 2, "R")
+        esperado = [
+            ['O', 'O', 'O'],
+            ['R', 'R', 'R'],
+            ['O', 'O', 'O']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_horizontalmente_y2_igual_a_y1(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_horizontalmente(3, 3, 2, "R")
+        esperado = [
+            ['O', 'O', 'O'],
+            ['O', 'O', 'R'],
+            ['O', 'O', 'O']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_horizontalmente_Y_maior_que_matriz(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(2, 3, 4, "R")
+
+    def teste_colorir_horizontalmente_Y_menor_que_matriz(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(3, 3, -1, "R")
+
+    def teste_colorir_horizontalmente_x1_igual_a_zero(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(0, 3, 2, "R")
+
+    def teste_colorir_horizontalmente_x2_igual_a_zero(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(3, 0, 2, "R")
+
+    def teste_colorir_horizontalmente_Y_igual_a_zero(self):
+        self.editor.criar(3, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_horizontalmente(2, 3, 0, "R")
+
 
 if __name__ == '__main__':
     unittest.main()
