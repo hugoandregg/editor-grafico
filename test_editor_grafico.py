@@ -335,9 +335,9 @@ class TestEditorGrafico(unittest.TestCase):
     '''
     F X Y C
     Preenche a região com a cor C. A região R é definida da seguinte forma:
-    O pixel (X,Y) pertence à região. Outro pixel pertence à região, se e somente se,
-    ele tiver a mesma cor que o pixel (X,Y) e tiver pelo menos um lado em comum com
-    um pixel pertencente à região.
+    O pixel (X,Y) pertence à região. Outro pixel pertence à região, se e
+    somente se, ele tiver a mesma cor que o pixel (X,Y) e tiver pelo menos
+    um lado em comum com um pixel pertencente à região.
     '''
     def teste_colorir_regiao(self):
         self.editor.criar(3, 3)
@@ -403,6 +403,26 @@ class TestEditorGrafico(unittest.TestCase):
         self.editor.criar(4, 3)
         with self.assertRaises(IndexError):
             self.editor.colorir_regiao(1, -1, 'R')
+
+    '''
+    C
+    Limpa a matriz. O tamanho permanece o mesmo. Todos os pixels ficam
+    brancos (O).
+    '''
+    def teste_limpar(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir(2, 3, 'R')
+        self.editor.limpar()
+        esperado = [
+            ["O", "O", "O"],
+            ["O", "O", "O"],
+            ["O", "O", "O"]
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_limpar_sem_matriz_criada(self):
+        self.editor.limpar()
+        self.assertEquals(self.editor.matriz, [])
 
 
 if __name__ == '__main__':

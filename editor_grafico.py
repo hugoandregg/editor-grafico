@@ -59,6 +59,11 @@ class EditorGrafico():
             if self.matriz[x][y-1] == cor_aux:
                 self.colorir_regiao(x+1, y, cor)
 
+    def limpar(self):
+        for x in range(len(self.matriz)):
+            for y in range(len(self.matriz[0])):
+                self.matriz[x][y] = "O"
+
 
 def main():
     pass
