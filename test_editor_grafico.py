@@ -332,6 +332,78 @@ class TestEditorGrafico(unittest.TestCase):
         with self.assertRaises(IndexError):
             self.editor.colorir_retangulo(-2, 1, 3, 3, "R")
 
+    '''
+    F X Y C
+    Preenche a região com a cor C. A região R é definida da seguinte forma:
+    O pixel (X,Y) pertence à região. Outro pixel pertence à região, se e somente se,
+    ele tiver a mesma cor que o pixel (X,Y) e tiver pelo menos um lado em comum com
+    um pixel pertencente à região.
+    '''
+    def teste_colorir_regiao(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_regiao(3, 3, 'R')
+        esperado = [
+            ['R', 'R', 'R'],
+            ['R', 'R', 'R'],
+            ['R', 'R', 'R']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_regiao_com_linha_vertical(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_verticalmente(2, 1, 3, 'Q')
+        self.editor.colorir_regiao(1, 1, 'R')
+        esperado = [
+            ['R', 'Q', 'O'],
+            ['R', 'Q', 'O'],
+            ['R', 'Q', 'O']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_regiao_com_linha_horizontal(self):
+        self.editor.criar(3, 3)
+        self.editor.colorir_horizontalmente(1, 3, 2, 'Q')
+        self.editor.colorir_regiao(1, 1, 'R')
+        esperado = [
+            ['R', 'R', 'R'],
+            ['Q', 'Q', 'Q'],
+            ['O', 'O', 'O']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_regiao_com_linha_vertical_incompleta(self):
+        self.editor.criar(3, 4)
+        self.editor.colorir_verticalmente(3, 1, 2, 'Q')
+        self.editor.colorir_regiao(1, 1, 'R')
+        esperado = [
+            ['R', 'R', 'Q', 'R'],
+            ['R', 'R', 'Q', 'R'],
+            ['R', 'R', 'R', 'R']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_regiao_com_linha_horizontal_incompleta(self):
+        self.editor.criar(4, 3)
+        self.editor.colorir_horizontalmente(2, 3, 3, 'Q')
+        self.editor.colorir_regiao(1, 1, 'R')
+        esperado = [
+            ['R', 'R', 'R'],
+            ['R', 'R', 'R'],
+            ['R', 'Q', 'Q'],
+            ['R', 'R', 'R']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_regiao_com_X_invalido(self):
+        self.editor.criar(4, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_regiao(0, 1, 'R')
+
+    def teste_colorir_regiao_com_Y_invalido(self):
+        self.editor.criar(4, 3)
+        with self.assertRaises(IndexError):
+            self.editor.colorir_regiao(1, -1, 'R')
+
 
 if __name__ == '__main__':
     unittest.main()

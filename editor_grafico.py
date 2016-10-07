@@ -40,6 +40,25 @@ class EditorGrafico():
         for y in range(y1, y2+1):
             self.colorir_horizontalmente(x1, x2, y, cor)
 
+    def colorir_regiao(self, x, y, cor):
+        x, y, cor = int(x)-1, int(y)-1, str(cor)
+        if x < 0 or y < 0:
+            raise IndexError
+        cor_aux = self.matriz[x][y]
+        self.matriz[x][y] = cor
+        if x+1 < (len(self.matriz)):
+            if self.matriz[x+1][y] == cor_aux:
+                self.colorir_regiao(x+2, y+1, cor)
+        if x-1 >= 0:
+            if self.matriz[x-1][y] == cor_aux:
+                self.colorir_regiao(x, y+1, cor)
+        if y+1 < (len(self.matriz[0])):
+            if self.matriz[x][y+1] == cor_aux:
+                self.colorir_regiao(x+1, y+2, cor)
+        if y-1 >= 0:
+            if self.matriz[x][y-1] == cor_aux:
+                self.colorir_regiao(x+1, y, cor)
+
 
 def main():
     pass
