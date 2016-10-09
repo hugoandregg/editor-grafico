@@ -1,6 +1,7 @@
 # !/usr/bin/python
 # -*- coding: utf8 -*-
 import unittest
+import os
 from editor_grafico import *
 
 
@@ -423,6 +424,38 @@ class TestEditorGrafico(unittest.TestCase):
     def teste_limpar_sem_matriz_criada(self):
         self.editor.limpar()
         self.assertEquals(self.editor.matriz, [])
+
+    '''
+    S Name
+    Escreve a imagem em um arquivo de nome Name.
+    '''
+    def teste_imprimir(self):
+        self.editor.criar(2, 4)
+        esperado = "O O O O\nO O O O"
+        self.assertEquals(self.editor.imprimir(), esperado)
+
+    def teste_imprimir_vazio(self):
+        self.assertEquals(self.editor.imprimir(), "")
+
+    def teste_salvar(self):
+        self.editor.criar(2, 4)
+        self.editor.salvar("one.bmp")
+        esperado = "O O O O\nO O O O"
+        resultado = open("one.bmp").read()
+        try:
+            self.assertEqual(resultado, esperado)
+        finally:
+            os.remove("one.bmp")
+
+    def teste_salvar_sem_nome(self):
+        self.editor.criar(1, 5)
+        self.editor.salvar()
+        esperado = "O O O O O"
+        resultado = open("matriz.bmp").read()
+        try:
+            self.assertEqual(resultado, esperado)
+        finally:
+            os.remove("matriz.bmp")
 
 
 if __name__ == '__main__':

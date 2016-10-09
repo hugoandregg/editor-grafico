@@ -64,10 +64,19 @@ class EditorGrafico():
             for y in range(len(self.matriz[0])):
                 self.matriz[x][y] = "O"
 
+    def imprimir(self):
+        matriz_str = []
+        for x in range(len(self.matriz)):
+            matriz_str.append(' '.join(self.matriz[x]))
+        return '\n'.join(matriz_str)
+
+    def salvar(self, nome="matriz.bmp"):
+        with open(nome, 'w') as f:
+            f.write(self.imprimir())
+
 
 def main():
     pass
 
 if __name__ == '__main__':
-    editor = EditorGrafico()
     main()
