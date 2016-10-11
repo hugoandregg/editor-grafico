@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 import unittest
 import os
+import mock
 from editor_grafico import *
 
 
@@ -18,7 +19,7 @@ class TestEditorGrafico(unittest.TestCase):
         self.assertEquals(self.editor.matriz, [["O", "O"], ["O", "O"]])
 
     def test_criar_com_index_diferentes(self):
-        self.editor.criar(2, 3)
+        self.editor.criar(3, 2)
         self.assertEquals(self.editor.matriz,
                           [["O", "O", "O"], ["O", "O", "O"]])
 
@@ -46,8 +47,8 @@ class TestEditorGrafico(unittest.TestCase):
         self.editor.criar(2, 2)
         self.editor.colorir(1, 2, "R")
         esperado = [
-            ["O", "R"],
-            ["O", "O"]
+            ["O", "O"],
+            ["R", "O"]
         ]
         self.assertEquals(self.editor.matriz, esperado)
 
@@ -56,15 +57,15 @@ class TestEditorGrafico(unittest.TestCase):
         self.editor.colorir(2, 3, "R")
         esperado = [
             ["O", "O", "O"],
-            ["O", "O", "R"],
-            ["O", "O", "O"]
+            ["O", "O", "O"],
+            ["O", "R", "O"]
         ]
         self.assertEquals(self.editor.matriz, esperado)
 
     def teste_colorir_com_numero(self):
         self.editor.criar(2, 2)
         self.editor.colorir(1, 2, 3)
-        self.assertEquals(self.editor.matriz, [["O", "3"], ["O", "O"]])
+        self.assertEquals(self.editor.matriz, [["O", "O"], ["3", "O"]])
 
     def teste_colorir_com_X_maior_que_matriz(self):
         self.editor.criar(2, 2)
@@ -373,7 +374,7 @@ class TestEditorGrafico(unittest.TestCase):
         self.assertEquals(self.editor.matriz, esperado)
 
     def teste_colorir_regiao_com_linha_vertical_incompleta(self):
-        self.editor.criar(3, 4)
+        self.editor.criar(4, 3)
         self.editor.colorir_verticalmente(3, 1, 2, 'Q')
         self.editor.colorir_regiao(1, 1, 'R')
         esperado = [
@@ -384,7 +385,7 @@ class TestEditorGrafico(unittest.TestCase):
         self.assertEquals(self.editor.matriz, esperado)
 
     def teste_colorir_regiao_com_linha_horizontal_incompleta(self):
-        self.editor.criar(4, 3)
+        self.editor.criar(3, 4)
         self.editor.colorir_horizontalmente(2, 3, 3, 'Q')
         self.editor.colorir_regiao(1, 1, 'R')
         esperado = [
@@ -431,7 +432,7 @@ class TestEditorGrafico(unittest.TestCase):
     '''
     def teste_imprimir(self):
         self.editor.criar(2, 4)
-        esperado = "O O O O\nO O O O"
+        esperado = "OO\nOO\nOO\nOO"
         self.assertEquals(self.editor.imprimir(), esperado)
 
     def teste_imprimir_vazio(self):
@@ -440,7 +441,7 @@ class TestEditorGrafico(unittest.TestCase):
     def teste_salvar(self):
         self.editor.criar(2, 4)
         self.editor.salvar("one.bmp")
-        esperado = "O O O O\nO O O O"
+        esperado = "OO\nOO\nOO\nOO"
         resultado = open("one.bmp").read()
         try:
             self.assertEqual(resultado, esperado)
@@ -448,15 +449,61 @@ class TestEditorGrafico(unittest.TestCase):
             os.remove("one.bmp")
 
     def teste_salvar_sem_nome(self):
-        self.editor.criar(1, 5)
+        self.editor.criar(5, 1)
         self.editor.salvar()
-        esperado = "O O O O O"
+        esperado = "OOOOO"
         resultado = open("matriz.bmp").read()
         try:
             self.assertEqual(resultado, esperado)
         finally:
             os.remove("matriz.bmp")
 
+    '''
+    Dada uma matriz de tamanho MxN na qual cada elemento represente um pixel,
+    crie um programa que leia uma sequência de comandos e os interprete
+    manipulando a matriz de acordo com a descrição abaixo de cada comando.
+    '''
+    def teste_leitura_de_dados(self):
+        with mock.patch('__builtin__.raw_input') as mocked:
+            mocked.side_effect = my_side_effect('I 5 6', 'L 2 3 A',
+                                                'S one.bmp', 'G 2 3 J',
+                                                'V 2 3 4 W', 'H 3 4 2 Z',
+                                                'F 3 3 J', 'S two.bmp',
+                                                'X')
+            main()
+            esperado = 'OOOOO\nOOOOO\nOAOOO\nOOOOO\nOOOOO\nOOOOO'
+            resultado = open("one.bmp").read()
+            try:
+                self.assertEqual(resultado, esperado)
+            finally:
+                os.remove("one.bmp")
+            esperado = 'JJJJJ\nJJZZJ\nJWJJJ\nJWJJJ\nJJJJJ\nJJJJJ'
+            resultado = open("two.bmp").read()
+            try:
+                self.assertEqual(resultado, esperado)
+            finally:
+                os.remove("two.bmp")
+
+    def teste_leitura_de_dados(self):
+        with mock.patch('__builtin__.raw_input') as mocked:
+            mocked.side_effect = my_side_effect('I 10 9', 'L 5 3 A',
+                                                'G 2 3 J', 'V 2 3 4 W',
+                                                'H 1 10 5 Z', 'F 3 3 J',
+                                                'K 2 7 8 8 E', 'F 9 9 R',
+                                                'S one.bmp', 'X')
+            main()
+            esperado = 'JJJJJJJJJJ\nJJJJJJJJJJ\nJWJJAJJJJJ\nJWJJJJJJJJ\nZZZZZZ'
+            esperado += 'ZZZZ\nRRRRRRRRRR\nREEEEEEERR\nREEEEEEERR\nRRRRRRRRRR'
+            resultado = open("one.bmp").read()
+            try:
+                self.assertEqual(resultado, esperado)
+            finally:
+                os.remove("one.bmp")
+
+
+def my_side_effect(*args):
+    for el in args:
+        yield el
 
 if __name__ == '__main__':
     unittest.main()
