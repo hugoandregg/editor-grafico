@@ -396,6 +396,30 @@ class TestEditorGrafico(unittest.TestCase):
         ]
         self.assertEquals(self.editor.matriz, esperado)
 
+    def teste_colorir_regiao_especifica(self):
+        self.editor.criar(3, 4)
+        self.editor.colorir_horizontalmente(2, 3, 4, 'Q')
+        self.editor.colorir_regiao(2, 4, 'R')
+        esperado = [
+            ['O', 'O', 'O'],
+            ['O', 'O', 'O'],
+            ['O', 'O', 'O'],
+            ['O', 'R', 'R']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
+    def teste_colorir_regiao_unica(self):
+        self.editor.criar(3, 4)
+        self.editor.colorir(3, 2, 'Q')
+        self.editor.colorir_regiao(3, 2, 'R')
+        esperado = [
+            ['O', 'O', 'O'],
+            ['O', 'O', 'R'],
+            ['O', 'O', 'O'],
+            ['O', 'O', 'O']
+        ]
+        self.assertEquals(self.editor.matriz, esperado)
+
     def teste_colorir_regiao_com_X_invalido(self):
         self.editor.criar(4, 3)
         with self.assertRaises(IndexError):

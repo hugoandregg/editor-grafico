@@ -45,19 +45,19 @@ class EditorGrafico():
         x, y, cor = int(x)-1, int(y)-1, str(cor)
         if x < 0 or y < 0:
             raise IndexError
-        cor_aux = self.matriz[x][y]
-        self.matriz[x][y] = cor
-        if x+1 < (len(self.matriz)):
-            if self.matriz[x+1][y] == cor_aux:
+        cor_aux = self.matriz[y][x]
+        self.matriz[y][x] = cor
+        if x+1 < (len(self.matriz[0])):
+            if self.matriz[y][x+1] == cor_aux:
                 self.colorir_regiao(x+2, y+1, cor)
         if x-1 >= 0:
-            if self.matriz[x-1][y] == cor_aux:
+            if self.matriz[y][x-1] == cor_aux:
                 self.colorir_regiao(x, y+1, cor)
-        if y+1 < (len(self.matriz[0])):
-            if self.matriz[x][y+1] == cor_aux:
+        if y+1 < (len(self.matriz)):
+            if self.matriz[y+1][x] == cor_aux:
                 self.colorir_regiao(x+1, y+2, cor)
         if y-1 >= 0:
-            if self.matriz[x][y-1] == cor_aux:
+            if self.matriz[y-1][x] == cor_aux:
                 self.colorir_regiao(x+1, y, cor)
 
     def limpar(self):
